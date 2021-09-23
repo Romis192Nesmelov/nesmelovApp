@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, ImageBackground, FlatList, Text, TouchableOpacity, SafeAreaView, Image } from 'react-native';
+import { StyleSheet, ImageBackground, FlatList, Text, TouchableOpacity, SafeAreaView, Image, Dimensions } from 'react-native';
 import { gStyle } from '../styles/style';
 import { gVars } from './gVars';
 import Loader from './Loader';
@@ -8,6 +8,9 @@ export default function Main({ navigation }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   
+  const window = Dimensions.get('window');
+  const [isPortrait, setOrientation] = useState(window.width <= window.height);
+
   const fetchData = async () => {
     const resp = await fetch(gVars.host + '/api/branches', {
       method: 'GET'
@@ -21,6 +24,9 @@ export default function Main({ navigation }) {
 
   useEffect(() => {
     fetchData();
+    Dimensions.addEventListener('change', ({window:{width,height}}) => {
+      setOrientation(width <= height);
+    });
   }, []);
 
   if (loading) {
@@ -32,7 +38,7 @@ export default function Main({ navigation }) {
                   <Image style={styles.icon} source={{ uri: gVars.host + '/' + item.icon }} />
                   <Text style={styles.text}>{ item.rus }</Text>
               </TouchableOpacity>
-            )} keyExtractor={(item) => item.id.toString()} />
+            )} horizontal={!isPortrait} keyExtractor={(item) => item.id.toString()} />
           </ImageBackground>
         </SafeAreaView>
     );
@@ -45,18 +51,21 @@ export default function Main({ navigation }) {
 
 const styles = StyleSheet.create({
   iconContainer: {
+    width: 120,
     flex: 1,
     alignItems: 'center',
-    marginTop: 5,
-    marginBottom: 5
+    justifyContent: 'center',
+    marginTop: 3,
+    marginBottom: 3
   },
   icon: {
-    flex: 1,
+    // flex: 1,
     width: 80,
-    height: 80
+    height: 80,
+    resizeMode: 'contain'
   },
   text: {
-    fontSize: 20,
+    fontSize: 14,
     fontFamily: 'jura-bold',
     color: '#696969',
     textAlign: 'center'

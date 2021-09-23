@@ -42,15 +42,10 @@ const styles = StyleSheet.create({
       fontSize: 16,
       fontFamily: 'jura-bold',
       color: '#696969',
-      marginBottom: 5
+      marginBottom: 3
     },
     navBar: {
         borderBottomWidth: 4,
-        borderBottomColor: '#e18f00',
-        shadowOffset:{width: 0,height: 3},
-        shadowColor: 'black',
-        shadowOpacity: 0.5,
-        shadowRadius: 10,
-        elevation: 1
+        borderBottomColor: '#e18f00'
     }
   });

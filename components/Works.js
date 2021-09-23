@@ -9,7 +9,12 @@ export default function Works({ route }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [lightbox, setLightbox] = useState(false);
+    
     const window = Dimensions.get('window');
+    const [windowSize, setWindowSize] = useState({ 
+        'width': window.width,
+        'height': window.height
+    });
 
     const openUrl = async (url) => {
         const supported = await Linking.canOpenURL(url);
@@ -33,6 +38,12 @@ export default function Works({ route }) {
 
     useEffect(() => {
         fetchData();
+        Dimensions.addEventListener('change', ({window:{width,height}}) => {
+            setWindowSize({
+                'width': width,
+                'height': height
+            });
+        });
     }, []);
     
     if (loading) {
@@ -41,8 +52,8 @@ export default function Works({ route }) {
                 <ImageBackground source={require('../assets/black.png')} resizeMode="cover" style={
                     gStyle.bgImage,
                     { 
-                        width: lightbox ? window.width : 0,
-                        height: lightbox ? window.height : 0,
+                        width: lightbox ? windowSize.width : 0,
+                        height: lightbox ? windowSize.height - 60 : 0,
                         position: 'absolute',
                         flex: 1,
                         justifyContent: 'center',
@@ -52,11 +63,11 @@ export default function Works({ route }) {
                         zIndex: 999
                     }
                 }>
-                    <Ionicons name="close-circle" size={34} style={styles.iconClose} onPress={() => {
+                    <Ionicons name="close-circle" size={30} style={styles.iconClose} onPress={() => {
                         // document.body.style.overflow = 'scroll';
                         setLightbox(false);
                     }} />
-                    <Image style={styles.fullImg} source={{ uri: lightbox }} />
+                    <Image style={styles.fullImg} source={{ uri: lightbox ? lightbox : gVars.host + '/images/black.png' }} />
                 </ImageBackground>
                 
                 <Text style={styles.head}>{ route.params.rus }</Text>
@@ -113,8 +124,8 @@ const styles = StyleSheet.create({
         resizeMode: 'cover'
     },
     fullImg: {
-        width: '100%',
-        height: 400,
+        width: '95%',
+        height: 320,
         resizeMode: 'contain'
     },
     iconClose: {
