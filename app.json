@@ -2,7 +2,7 @@
   "expo": {
     "name": "nesmelovApp",
     "slug": "nesmelovApp",
-    "version": "1.0.1",
+    "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/icon_frog.png",
     "splash": {
@@ -24,7 +24,9 @@
         "foregroundImage": "./assets/icon_frog.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "nesmelov.apk"
+      "package": "nesmelov.apk",
+      "permissions": [],
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
